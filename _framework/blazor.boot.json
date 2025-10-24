@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "KH2AiTutorWeb",
   "resources": {
-    "hash": "sha256-0d38GEl3eEbW+uCKY7Rd8uUX6orhjCj5A3Mna1rpM3Y=",
+    "hash": "sha256-+INONB7RumL/d0t/+KLg4Seig9GKly+lrMTc0ocxLuU=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-D0bzod5lwwSzPR43JC8TTCcZKw+3jIHOk8CZFCRj5is="
     },
@@ -49,7 +49,7 @@
       "System.Text.RegularExpressions.wasm": "sha256-ZbmCOYk13oU7nMI9Ue8+ZkD/w+xO15+JdM9ASCKB7BA=",
       "System.Threading.wasm": "sha256-ALJhXJMmLXdpWqplQ7Ghw4fhX1J8lAEl9A0imUz0ZNM=",
       "System.Private.CoreLib.wasm": "sha256-jlDLBd8n86eo6/CadNL8nL7+lDqy3KtNirm90yTcxpQ=",
-      "KH2AiTutorWeb.wasm": "sha256-uYwPIdToHEE0eunJllqWquSpfhK8C9kA0SLqSRzb2x4="
+      "KH2AiTutorWeb.wasm": "sha256-po8foBXSIynWK1VyYPw7hpUqSIdEmU7stLk3l3zHCjA="
     }
   },
   "cacheBootResources": true,
