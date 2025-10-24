@@ -1,0 +1,1 @@
+dotnet publish KH2AiTutor.Client\KH2AiTutor.Client.csproj -o publish -c:Release -p:GHPages=true -p:GHPagesBase=/KH2AiTutor/ && robocopy /e publish\wwwroot ..\docs
