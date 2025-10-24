@@ -2,3 +2,7 @@
 	path = OpenKh
 	url = https://github.com/OpenKH/OpenKh.git
 	branch = master
+[submodule "docs"]
+	path = docs
+	url = https://github.com/kenjiuno/KH2AiTutor.git
+	branch = gh-pages
