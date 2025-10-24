@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.20" PrivateAssets="all" />
+
+    <PackageReference Include="System.Interactive" Version="6.0.3" />
+    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="2.2.1" />
+
+    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTrap.cs" Link="Externs\BdxTrap.cs" />
+    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTraps.cs" Link="Externs\BdxTraps.cs" />
+    <Folder Include="Externs\" />
+  </ItemGroup>
+
+</Project>

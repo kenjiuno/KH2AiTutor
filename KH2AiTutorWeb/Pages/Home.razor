@@ -1,0 +1,40 @@
+﻿@page "/"
+@using KH2AiTutorWeb.Helpers
+@inject IEnumerable<HrefAndDisplayGroup> _hrefAndDisplayGroups
+
+<PageTitle>KH2AiTutor</PageTitle>
+
+<h1>KH2AiTutor</h1>
+
+<p>
+    <i>
+        Quick links:
+        <NavLink href="https://openkh.dev/kh2/file/ai/" target="_blank">Kingdom Hearts II - AI</NavLink>
+        |
+        <NavLink href="https://kenjiuno.github.io/monitor-kh2fm/kh2ai.html" target="_blank">monitor-kh2fm</NavLink>
+    </i>
+</p>
+
+<p>Topics:</p>
+
+@foreach (var groupPerRow in _hrefAndDisplayGroups.Buffer(7))
+{
+    <div class="row mb-1">
+        @foreach (var group in groupPerRow)
+        {
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header">@group.Display</div>
+                    <div class="card-body">
+                        @foreach (var item in group.Links)
+                        {
+                            <NavLink href="@item.Href" class="btn btn-link">@item.Display</NavLink>
+
+                            <br />
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
