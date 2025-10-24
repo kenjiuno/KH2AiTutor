@@ -885,11 +885,11 @@ syscall_documentation_work_guidelines.md".Replace("\r\n", "\n");
         {
             var dict = new SortedDictionary<string, string>();
 
-            var pattern = new Regex("/(?<name>[^/\\.]+)\\.md$", RegexOptions.Multiline);
+            var pattern = new Regex("^.+?/(?<name>[^/\\.]+)\\.md$", RegexOptions.Multiline);
 
             foreach (var match in pattern.Matches(_thundrioFiles).Cast<Match>())
             {
-                var line = match.Value;
+                var line = match.Value.TrimStart('/');
                 dict[match.Groups["name"].Value] = $"https://github.com/thundrio-kh/kh2-ai-decomp/blob/master/{line}";
             }
 
