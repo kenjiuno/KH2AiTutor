@@ -1,0 +1,90 @@
+﻿@page "/i/ret"
+
+<PageTitle>ret (ret)</PageTitle>
+
+<div class="card">
+    <div class="card-header">ret instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>sp</td>
+                </tr>
+                <tr>
+                    <th>stack memory: </th>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(count)</td>
+                    <td class="stack-item">(ret-ip)</td>
+                    <td class="sp-here future-gray">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(count)</td>
+                    <td class="stack-item">(ret-ip)</td>
+                    <td class="sp-here">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="future-gray">sp</td>
+                    <td class="future-gray">move here</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm">1 of 4</div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; ret
+
+ret ; returns to the next instruction if jal or jal32 are used before.
+    ; or, if the invocation is made by the game engine, terminate the execution of the script with status BdStatus.Ret (3)
+
+    ; also pops local stack area.
+
+; (never reach here)</pre>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

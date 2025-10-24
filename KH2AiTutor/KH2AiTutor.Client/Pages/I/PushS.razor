@@ -1,0 +1,83 @@
+﻿@page "/i/push.s"
+
+<PageTitle>push.s (pushImmf)</PageTitle>
+
+<div class="card">
+    <div class="card-header">push.s instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>tp</td>
+                    <td></td>
+                    <td class="future-gray">②</td>
+                    <td class="future-gray">tp move here</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">temp memory:</th>
+                    <td class="tp-here">|<br />|</td>
+                    <td class="stack-item">① set @NewTP0</td>
+                    <td class="tp-here future-gray">|<br />|</td>
+                    <td class="stack-item">??</td>
+                    <td class="stack-item">??</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><FloatEdit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; push single
+
+push.s @Arg1
+drop ; @NewTP0</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] public float Arg1 { get; set; }
+    private int NewTP0;
+    private float PrevArg1;
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 1.5f : Arg1;
+        Recalc();
+    }
+
+    private int DisplayAsInt(float value)
+    {
+        return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+    }
+
+    private void Recalc()
+    {
+        NewTP0 = DisplayAsInt(Arg1);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevArg1 != Arg1 || firstRender)
+        {
+            PrevArg1 = Arg1;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

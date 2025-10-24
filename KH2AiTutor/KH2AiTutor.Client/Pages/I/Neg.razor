@@ -1,0 +1,61 @@
+﻿@page "/i/neg"
+
+<PageTitle>neg (neg)</PageTitle>
+
+<div class="card">
+    <div class="card-header">neg instruction</div>
+    <div class="card-body">
+        <PopAndPushTemp Pops="@($"{(TP0)}")"
+                        Pushes="@($"{(NewTP0)} ({(uint)(NewTP0)})")" />
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; 1 to -1, -1 to 1
+
+push @TP0
+neg
+drop ; @(NewTP0)</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    private int PrevTP0;
+    private int NewTP0;
+
+    protected override void OnInitialized()
+    {
+        TP0 = (TP0 == default) ? 123 : TP0;
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+        NewTP0 = -TP0;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevTP0 != TP0 || firstRender)
+        {
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

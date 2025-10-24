@@ -1,0 +1,13 @@
+﻿.stack-item {
+    min-width: 99px;
+    min-height: 24px;
+    border: 1px solid blue;
+}
+
+.tp-here, .sp-here, .m-here {
+    text-align: center;
+}
+
+.future-gray {
+    color: gray;
+}

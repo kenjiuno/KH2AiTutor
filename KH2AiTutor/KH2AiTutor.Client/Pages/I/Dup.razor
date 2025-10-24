@@ -1,0 +1,59 @@
+﻿@page "/i/dup"
+
+<PageTitle>dup (dup)</PageTitle>
+
+<div class="card">
+    <div class="card-header">dup instruction</div>
+    <div class="card-body">
+        <PopAndPushTemp Pops="@($"{TP0}")"
+                        Pushes="@($"{TP0},{TP0}")" />
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; duplicate one value at tp
+
+push @TP0
+dup
+drop ; @TP0
+drop ; @TP0</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    private int PrevTP0;
+
+    protected override void OnInitialized()
+    {
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevTP0 != TP0 || firstRender)
+        {
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

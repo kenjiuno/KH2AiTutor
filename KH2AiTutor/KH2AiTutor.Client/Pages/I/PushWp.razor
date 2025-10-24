@@ -1,0 +1,98 @@
+﻿@page "/i/push.wp"
+
+<PageTitle>push.wp (pushFromPWp)</PageTitle>
+
+<div class="card">
+    <div class="card-header">push.wp instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>wp</td>
+                    <td>= @WP</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">work memory: </th>
+                    <td class="wp-here">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>tp</td>
+                    <td></td>
+                    <td class="future-gray">②</td>
+                    <td class="future-gray">tp move here</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">temp memory:</th>
+                    <td class="tp-here">|<br />|</td>
+                    <td class="stack-item">① set @(NewTP0)</td>
+                    <td class="tp-here future-gray">|<br />|</td>
+                    <td class="stack-item">??</td>
+                    <td class="stack-item">??</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int10Edit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm"><Int32Edit Label="WP" Value="@WP" OnValue="v => WP = v" /></div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; push wp + int16
+
+push.wp @Arg1
+drop ; @NewTP0</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] int Arg1 { get; set; }
+    [SupplyParameterFromQuery(Name = "wp")] int WP { get; set; }
+    private int NewTP0;
+    private int PrevArg1;
+    private int PrevWP;
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 16 : Arg1;
+        WP = (WP == default) ? 200 : WP;
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+        NewTP0 = WP + Arg1;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevArg1 != Arg1 || PrevWP != WP || firstRender)
+        {
+            PrevArg1 = Arg1;
+            PrevWP = WP;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

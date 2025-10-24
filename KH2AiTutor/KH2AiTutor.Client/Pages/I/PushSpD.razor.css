@@ -1,0 +1,18 @@
+﻿.stack-item {
+    min-width: 99px;
+    min-height: 24px;
+    border: 1px solid blue;
+}
+
+.tp-here, .sp-here {
+    text-align: center;
+}
+
+.future-gray {
+    color: gray;
+}
+
+.memory-name {
+    min-width: 15ex;
+    text-align: right;
+}

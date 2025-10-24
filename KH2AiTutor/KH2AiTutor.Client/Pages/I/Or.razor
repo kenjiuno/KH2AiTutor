@@ -1,0 +1,18 @@
+﻿@page "/i/or"
+
+<RenderIntBinaryOp NewName="or"
+                   OldName="or"
+                   CalcNewTP0="(TP0, TP1) => (TP0 | TP1)"
+                   Hint="Bitwise or"
+                   TP0="@TP0" TP1="@TP1" />
+
+@code {
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    [SupplyParameterFromQuery(Name = "tp1")] int TP1 { get; set; }
+
+    protected override void OnInitialized()
+    {
+        TP0 = (TP0 == default) ? 128 : TP0;
+        TP1 = (TP1 == default) ? 10 : TP1;
+    }
+}

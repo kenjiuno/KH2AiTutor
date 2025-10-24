@@ -1,0 +1,49 @@
+﻿@page "/traps"
+@using KH2AiTutor.Client.Helpers
+@using KH2AiTutor.Client.Usecases
+@inject IEnumerable<HrefAndDisplayGroup> _hrefAndDisplayGroups
+@inject QueryTrapsUsecase _queryTrapsUsecase
+
+<PageTitle>Known traps</PageTitle>
+
+<h1>Known traps</h1>
+
+<ul>
+    @foreach (var level1 in _tree)
+    {
+        <li>
+            @level1.Display
+
+            @if (level1.Children.Any())
+            {
+                <ul>
+                    @foreach (var level2 in level1.Children)
+                    {
+                        <li>
+                            @level2.Display
+
+                            @if (level2.Children.Any())
+                            {
+                                <ul>
+                                    @foreach (var level3 in level2.Children)
+                                    {
+                                        <li>@level3.Display <FormatReferences References="@level3.References" /></li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+@code {
+    private IEnumerable<TrapHrefNode> _tree = Enumerable.Empty<TrapHrefNode>();
+
+    protected override void OnInitialized()
+    {
+        _tree = _queryTrapsUsecase.GetAllInTreeStyle();
+    }
+}

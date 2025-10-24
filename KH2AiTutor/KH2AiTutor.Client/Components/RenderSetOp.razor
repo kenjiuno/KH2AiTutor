@@ -1,0 +1,63 @@
+﻿<PageTitle>@NewName (@OldName)</PageTitle>
+
+<div class="card">
+    <div class="card-header">@NewName instruction</div>
+    <div class="card-body">
+        <PopAndPushTemp Pops="@($"{(TP0)}")"
+                        Pushes="@($"{NewTP0}")" />
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; @Hint
+
+push @TP0
+@NewName
+drop ; @NewTP0</pre>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int TP0 { get; set; }
+    [Parameter] public Func<int, int>? CalcNewTP0 { get; set; }
+    [Parameter] public string NewName { get; set; } = "";
+    [Parameter] public string OldName { get; set; } = "";
+    [Parameter] public string Hint { get; set; } = "";
+
+    private int PrevTP0;
+    private int NewTP0;
+
+    protected override void OnInitialized()
+    {
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+        NewTP0 = CalcNewTP0?.Invoke(TP0) ?? default;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevTP0 != TP0 || firstRender)
+        {
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

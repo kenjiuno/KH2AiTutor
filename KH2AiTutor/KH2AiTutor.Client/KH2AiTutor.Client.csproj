@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTrap.cs" Link="Externs\BdxTrap.cs" />
+    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTraps.cs" Link="Externs\BdxTraps.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.20" />
+
+    <PackageReference Include="System.Interactive" Version="6.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Externs\" />
+  </ItemGroup>
+
+</Project>

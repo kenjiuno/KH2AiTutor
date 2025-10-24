@@ -1,0 +1,12 @@
+﻿@if (Value < 0)
+{
+    <span class="text-danger">@(Value)</span>
+}
+else
+{
+    <span>+@(Value)</span>
+}
+
+@code {
+    [Parameter] public int Value { get; set; }
+}

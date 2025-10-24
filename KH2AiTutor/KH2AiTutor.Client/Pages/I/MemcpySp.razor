@@ -1,0 +1,128 @@
+﻿@page "/i/memcpy.sp"
+
+<PageTitle>memcpy.sp (memcpyToSp)</PageTitle>
+
+<div class="card">
+    <div class="card-header">memcpy.sp instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>sp</td>
+                    <td></td>
+                    <td>+@(Arg2)</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">stack memory: </th>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(count)</td>
+                    <td class="stack-item">(ret-ip)</td>
+                    <td class="sp-here">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(Write @Arg1 bytes)</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>at</td>
+                    <td></td>
+                    <td>@(TP0)</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">memory: </th>
+                    <td class="m-here">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(Read @Arg1 bytes)</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>tp</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">temp memory:</th>
+                    <td class="tp-here future-gray">|<br />|</td>
+                    <td class="stack-item">@(TP0)</td>
+                    <td class="tp-here">|<br />|</td>
+                    <td class="stack-item">...</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="future-gray">②</td>
+                    <td class="future-gray">tp move here</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm"><Int5Edit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm"><Int5Edit Label="Arg2" Value="@Arg2" OnValue="v => Arg2 = v" /></div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; memcpy to ( sp + int16)
+
+; push srcPtr
+; memcpy.sp numBytes, dstSpOffset
+
+push @TP0
+memcpy.sp @Arg1, @Arg2</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] int Arg1 { get; set; }
+    [SupplyParameterFromQuery(Name = "arg2")] int Arg2 { get; set; }
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    private int PrevArg1;
+    private int PrevArg2;
+    private int PrevTP0;
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 6 : Arg1;
+        Arg2 = (Arg2 == default) ? 14 : Arg1;
+        TP0 = (TP0 == default) ? 4800 : TP0;
+    }
+
+    private void Recalc()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevArg1 != Arg1 || PrevArg2 != Arg2 || PrevTP0 != TP0 || firstRender)
+        {
+            PrevArg1 = Arg1;
+            PrevArg2 = Arg2;
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,68 @@
+﻿@page "/i/bnez"
+
+<PageTitle>bnez (jnz)</PageTitle>
+
+<div class="card">
+    <div class="card-header">bnez instruction</div>
+    <div class="card-body">
+        <PopAndPushTemp Pops="@($"{TP0}")" />
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; branch if zero
+
+ push @TP0
+ bnez label ; @((On ? "jump will work" : "jump won't work"))
+
+ ; @((On ? "(the execution won't occur)" : "(the execution will occur)"))
+
+ b endif
+
+label:
+ ; @((On ? "(the execution will occur)" : "(the execution won't occur)"))
+
+endif:</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    private int PrevTP0;
+    private bool On;
+
+    protected override void OnInitialized()
+    {
+        TP0 = (TP0 == default) ? 0 : TP0;
+        Recalc();
+    }
+
+    private void Recalc()
+    {
+        On = TP0 != 0;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevTP0 != TP0 || firstRender)
+        {
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

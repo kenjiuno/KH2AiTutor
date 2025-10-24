@@ -1,0 +1,103 @@
+﻿@page "/i/jal"
+
+<PageTitle>jal, jal32 (gosub, gosub32)</PageTitle>
+
+<div class="card">
+    <div class="card-header">jal, jal32 instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>sp</td>
+                    @if (3 <= Arg1)
+                    {
+                        <td></td>
+                    }
+                    <td><DisplayOffset1 Value="@(4 * (Arg1 - 2))" /></td>
+                    <td><DisplayOffset1 Value="@(4 * (Arg1 - 1))" /></td>
+                    <td><DisplayOffset1 Value="@(4 * (Arg1 - 0))" /></td>
+                </tr>
+                <tr>
+                    <th class="memory-name">stack memory: </th>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">(count)</td>
+                    <td class="stack-item">(ret-ip)</td>
+                    <td class="sp-here">|<br />|<br /></td>
+                    @if (3 <= Arg1)
+                    {
+                        <td class="stack-item">...</td>
+                    }
+                    <td class="stack-item">(count)</td>
+                    <td class="stack-item">(ret-ip)</td>
+                    <td class="stack-item">(subRoutine stack starts here)</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int10Edit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm">2 of 4</div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; local function call (16-bit or 32-bit address)
+
+mainRoutine:
+@if (Arg1 < 2)
+{
+    <text> ; It causes a stack underflow!</text>
+}
+else
+{
+    <text> ; It means that mainRoutine declares @(4 * (Arg1 - 2)) bytes of local stack space</text>
+}
+
+
+ jal @Arg1, subRoutine
+ ret
+
+subRoutine:
+ ; ...
+ ret</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] int Arg1 { get; set; }
+    private int PrevArg1;
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 2 : Arg1;
+    }
+
+    private void Recalc()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevArg1 != Arg1 || firstRender)
+        {
+            PrevArg1 = Arg1;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

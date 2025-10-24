@@ -1,0 +1,98 @@
+﻿@page "/i/pop.wp"
+
+<PageTitle>pop.wp (popToWp)</PageTitle>
+
+<div class="card">
+    <div class="card-header">pop.wp instruction</div>
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>wp</td>
+                    <td></td>
+                    <td>+@(Arg1)</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">work memory: </th>
+                    <td class="wp-here">|<br />|<br /></td>
+                    <td class="stack-item">...</td>
+                    <td class="stack-item">① set @TP0</td>
+                    <td class="stack-item">...</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>tp</td>
+                </tr>
+                <tr>
+                    <th class="memory-name">temp memory:</th>
+                    <td class="tp-here future-gray">|<br />|</td>
+                    <td class="stack-item">@(TP0)</td>
+                    <td class="tp-here">|<br />|</td>
+                    <td class="stack-item">...</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="future-gray">②</td>
+                    <td class="future-gray">tp move here</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int32Edit Label="TP0" Value="@TP0" OnValue="v => TP0 = v" /></div>
+            <div class="col-sm"><Int10Edit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; pop *( wp + int16)
+
+push @TP0
+pop.wp @Arg1</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] int Arg1 { get; set; }
+    [SupplyParameterFromQuery(Name = "tp0")] int TP0 { get; set; }
+    private int PrevArg1;
+    private int PrevTP0;
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 64 : Arg1;
+        TP0 = (TP0 == default) ? 321 : TP0;
+    }
+
+    private void Recalc()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (PrevArg1 != Arg1 || PrevTP0 != TP0 || firstRender)
+        {
+            PrevArg1 = Arg1;
+            PrevTP0 = TP0;
+            Recalc();
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,18 @@
+﻿<label for="@Id" class="form-label">@Label</label>
+<input type="number" step="any" class="form-control" id="@Id" value="@Value"
+       @onchange="OnChange">
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public float Value { get; set; }
+    [Parameter] public EventCallback<float> OnValue { get; set; }
+
+    private async Task OnChange(ChangeEventArgs e)
+    {
+        if (float.TryParse("" + e.Value, out float newValue))
+        {
+            await OnValue.InvokeAsync(newValue);
+        }
+    }
+}

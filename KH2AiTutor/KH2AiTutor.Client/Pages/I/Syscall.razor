@@ -1,0 +1,105 @@
+﻿@page "/i/syscall"
+
+<PageTitle>syscall (syscall)</PageTitle>
+
+<div class="card">
+    <div class="card-header">syscall instruction</div>
+    <div class="card-body">
+        <PopAndPushTemp Pops="@(string.Join(",", InValues))"
+                        Pushes="@(string.Join(",", Enumerable.Repeat("(ret val)", NumOut)))" />
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">arguments</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm"><Int10Edit Label="Arg1" Value="@Arg1" OnValue="v => Arg1 = v" /></div>
+            <div class="col-sm"><Int16Edit Label="Arg2" Value="@Arg2" OnValue="v => Arg2 = v" /></div>
+            <div class="col-sm">3 of 4</div>
+            <div class="col-sm">4 of 4</div>
+        </div>
+        @foreach (var row in Enumerable.Range(0, NumIn).Buffer(4))
+        {
+            <div class="row">
+                @foreach (var index in row)
+                {
+                    <div class="col-sm"><Int32Edit Label="@($"TP{1 + index}")" Value="@(InValues[index])" OnValue="v => InValues[index] = v" /></div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card mt-1">
+    <div class="card-header">example</div>
+    <div class="card-body">
+        <pre xml:space="preserve">; syscall
+
+@foreach (var value in InValues)
+{
+            <text> push @value @("\n")</text>
+}
+ syscall @Arg1, @Arg2 ; @FuncName (@NumIn in, @NumOut out)
+@foreach (var _ in Enumerable.Repeat("", NumOut))
+{
+            <text> drop @("\n")</text>
+}
+</pre>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "arg1")] int Arg1 { get; set; }
+    [SupplyParameterFromQuery(Name = "arg2")] int Arg2 { get; set; }
+    private int PrevArg1;
+    private int PrevArg2;
+    private int NumIn;
+    private int NumOut;
+    private int PrevNumIn;
+    private int PrevNumOut;
+    private int[] InValues = Array.Empty<int>();
+    private string PrevHashedInValues = "";
+    private string FuncName = "";
+
+    private string HashInValues() => string.Join(",", InValues);
+
+    protected override void OnInitialized()
+    {
+        Arg1 = (Arg1 == default) ? 0 : Arg1;
+        Arg2 = (Arg2 == default) ? 0 : Arg2;
+    }
+
+    private void Recalc()
+    {
+        var found = OpenKh.Command.Bdxio.Models.BdxTraps.GetTraps()
+            .FirstOrDefault(it => it.TableIndex == Arg1 && it.TrapIndex == Arg2);
+
+        FuncName = found?.Name ?? $"unknown_{Arg1}_{Arg2}";
+        NumIn = (found?.Flags & 15) ?? 0;
+        NumOut = ((found?.Flags & 0x40000000) != 0) ? 1 : 0;
+        if (InValues.Length != NumIn)
+        {
+            InValues = new int[NumIn];
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var hashedInValues = HashInValues();
+        if (PrevArg1 != Arg1 || PrevArg2 != Arg2 || PrevHashedInValues != hashedInValues || firstRender)
+        {
+            PrevArg1 = Arg1;
+            PrevArg2 = Arg2;
+            PrevHashedInValues = hashedInValues;
+            Recalc();
+            StateHasChanged();
+        }
+        if (PrevNumIn != NumIn || PrevNumOut != NumOut)
+        {
+            PrevNumIn = NumIn;
+            PrevNumOut = NumOut;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,18 @@
+﻿<label for="@Id" class="form-label">@Label</label>
+<input type="number" min="0" max="65535" class="form-control" id="@Id" value="@Value"
+       @onchange="OnChange">
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public int Value { get; set; }
+    [Parameter] public EventCallback<int> OnValue { get; set; }
+
+    private async Task OnChange(ChangeEventArgs e)
+    {
+        if (int.TryParse("" + e.Value, out int newValue))
+        {
+            await OnValue.InvokeAsync(newValue & 65535);
+        }
+    }
+}

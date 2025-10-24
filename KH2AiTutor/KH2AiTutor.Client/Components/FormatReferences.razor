@@ -1,0 +1,10 @@
+﻿@using KH2AiTutor.Client.Helpers
+
+@foreach (var reference in References)
+{
+    <text>(</text><a href="@reference.Href" target="_blank">@reference.Display</a><text>)</text>
+}
+
+@code {
+    [Parameter] public IEnumerable<HrefAndDisplay> References { get; set; } = Enumerable.Empty<HrefAndDisplay>();
+}
