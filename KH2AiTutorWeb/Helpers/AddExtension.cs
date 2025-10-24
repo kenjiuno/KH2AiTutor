@@ -8,7 +8,7 @@ namespace KH2AiTutorWeb.Helpers
         {
             services.AddSingleton<QueryTrapsUsecase>();
             //NextService: services.AddSingleton<$ClassName$>();
- 
+
             {
                 var groups = new List<HrefAndDisplayGroup>();
                 groups.Add(new HrefAndDisplayGroup(
@@ -79,6 +79,7 @@ namespace KH2AiTutorWeb.Helpers
                         new HrefAndDisplay("i/sgtz", "sgtz"),
                         new HrefAndDisplay("i/slez", "slez"),
                         new HrefAndDisplay("i/sltz", "sltz"),
+                        new HrefAndDisplay("i/snez", "snez"),
                     ]
                 ));
                 groups.Add(new HrefAndDisplayGroup(
