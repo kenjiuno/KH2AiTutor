@@ -1,0 +1,64 @@
+﻿@page "/ccompiler1"
+@using OpenKh.Kh2Bdx.Utils
+@using System.Net
+
+<PageTitle>C compiler (experimental)</PageTitle>
+
+<h1>C compiler (experimental)</h1>
+
+<p class="text-muted">Compiler uses <code>OpenKh/OpenKh.Kh2Bdx</code>, <code>ANTLR 4 runtime</code> and so on</p>
+
+<div class="mt-2">
+    <label for="c">C</label>
+    <textarea class="form-control font-monospace" rows="7" id="c" @onchange='e => _c = (e.Value + "")'>@_c</textarea>
+</div>
+
+<div class="mt-2">
+    <label for="bdscript">bdscript</label>
+    <textarea class="form-control font-monospace" rows="9" id="bdscript">@_bdscript</textarea>
+</div>
+
+<div class="mt-2">
+    <button class="btn btn-primary" @onclick="Compile" accesskey="x">Compile (Alt+X)</button>
+</div>
+
+@if (_hasError)
+{
+    <div class="alert alert-info mt-2">
+        <strong>@_errorTitle</strong>
+        <textarea class="form-control font-monospace" rows="7">@(_errorMessage)</textarea>
+    </div>
+}
+
+@code {
+    private string _c = "";
+    private string _bdscript = "";
+    private bool _hasError = false;
+    private string _errorTitle = "";
+    private string _errorMessage = "";
+
+    private void Compile()
+    {
+        var output = new StringWriter();
+
+        try
+        {
+            var result = new BdxCEncoder()
+                .EncodeC(_c, "noname.c", output, output);
+
+            _bdscript = result.Bdscript;
+            _hasError = false;
+            _errorTitle = "";
+            _errorMessage = "";
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            _bdscript = "";
+            _hasError = true;
+            _errorTitle = ex.Message;
+            _errorMessage = output + "\n" + ex + "";
+            StateHasChanged();
+        }
+    }
+}

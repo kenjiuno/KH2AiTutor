@@ -4,19 +4,26 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>0.4</Version>
+    <Version>0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.20" PrivateAssets="all" />
 
+    <ProjectReference Include="..\OpenKh\OpenKh.Kh2Bdx\OpenKh.Kh2Bdx.csproj" />
+
     <PackageReference Include="System.Interactive" Version="6.0.3" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="2.2.1" />
+    <PackageReference Include="NLog" Version="5.3.2" />
 
-    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTrap.cs" Link="Externs\BdxTrap.cs" />
-    <Compile Include="..\..\OpenKh\OpenKh.Command.Bdxio\Models\BdxTraps.cs" Link="Externs\BdxTraps.cs" />
     <Folder Include="Externs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="KH2AiTutorWeb.nlog">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿@page "/i/syscall"
+@using OpenKh.Kh2Bdx.Models
 
 <PageTitle>syscall (syscall)</PageTitle>
 
@@ -72,7 +73,7 @@
 
     private void Recalc()
     {
-        var found = OpenKh.Command.Bdxio.Models.BdxTraps.GetTraps()
+        var found = BdxTraps.GetTraps()
             .FirstOrDefault(it => it.TableIndex == Arg1 && it.TrapIndex == Arg2);
 
         FuncName = found?.Name ?? $"unknown_{Arg1}_{Arg2}";

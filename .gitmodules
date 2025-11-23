@@ -1,7 +1,7 @@
 [submodule "OpenKh"]
 	path = OpenKh
-	url = https://github.com/OpenKH/OpenKh.git
-	branch = master
+	url = https://github.com/kenjiuno/OpenKh
+	branch = impl-bdx-c
 [submodule "docs"]
 	path = docs
 	url = https://github.com/kenjiuno/KH2AiTutor.git

@@ -1,4 +1,5 @@
 using KH2AiTutorWeb.Helpers;
+using OpenKh.Kh2Bdx.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,13 +11,13 @@ namespace KH2AiTutorWeb.Usecases
 
         public IEnumerable<TrapHrefNode> GetAllInTreeStyle()
         {
-            var traps = OpenKh.Command.Bdxio.Models.BdxTraps.GetTraps()
+            var traps = BdxTraps.GetTraps()
                 .OrderBy(trap => trap.Name);
 
             var trapsLevel1 = traps
                 .GroupBy(trap => trap.Name.Split('_')[0]);
 
-            IEnumerable<HrefAndDisplay> GetReferencesOf(OpenKh.Command.Bdxio.Models.BdxTrap trap)
+            IEnumerable<HrefAndDisplay> GetReferencesOf(BdxTrap trap)
             {
                 if (_thundrioRefs.TryGetValue(trap.Name, out string? href))
                 {
