@@ -1,12 +1,14 @@
 ﻿@page "/ccompiler1"
+@using KH2AiTutorWeb.Usecases
 @using OpenKh.Kh2Bdx.Utils
 @using System.Net
+@inject CCompileUsecase _ccompile
 
 <PageTitle>C compiler (experimental)</PageTitle>
 
 <h1>C compiler (experimental)</h1>
 
-<p class="text-muted">Compiler uses <code>OpenKh/OpenKh.Kh2Bdx</code>, <code>ANTLR 4 runtime</code> and so on</p>
+<p class="text-muted">Compiler uses <code>OpenKh/OpenKh.Kh2Bdx</code>, <code>ANTLR 4 runtime</code>, <code>Claude Sonnet 5.5</code> (<a href="https://github.com/kenjiuno/OpenKh/commits/impl-bdx-c/" target="_blank">commits</a>) and so on</p>
 
 <div class="mt-2">
     <label for="c">C</label>
@@ -14,8 +16,13 @@
 </div>
 
 <div class="mt-2">
-    <label for="bdscript">bdscript</label>
-    <textarea class="form-control font-monospace" rows="9" id="bdscript">@_bdscript</textarea>
+    <label for="bdscript">Output</label>
+    <textarea class="form-control font-monospace" rows="9" id="bdscript">@_output</textarea>
+</div>
+
+<div class="form-check mt-2">
+    <input class="form-check-input" type="checkbox" id="includeHeader" @bind="_toBdscript">
+    <label class="form-check-label" for="includeHeader">Provide as a bdscript</label>
 </div>
 
 <div class="mt-2">
@@ -32,7 +39,8 @@
 
 @code {
     private string _c = "";
-    private string _bdscript = "";
+    private bool _toBdscript;
+    private string _output = "";
     private bool _hasError = false;
     private string _errorTitle = "";
     private string _errorMessage = "";
@@ -43,10 +51,9 @@
 
         try
         {
-            var result = new BdxCEncoder()
-                .EncodeC(_c, "noname.c", output, output);
+            var result = _ccompile.Compile(_c, output, _toBdscript);
 
-            _bdscript = result.Bdscript;
+            _output = result.Bdscript;
             _hasError = false;
             _errorTitle = "";
             _errorMessage = "";
@@ -54,7 +61,7 @@
         }
         catch (Exception ex)
         {
-            _bdscript = "";
+            _output = "";
             _hasError = true;
             _errorTitle = ex.Message;
             _errorMessage = output + "\n" + ex + "";

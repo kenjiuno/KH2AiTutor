@@ -7,6 +7,7 @@ namespace KH2AiTutorWeb.Helpers
         public static IServiceCollection AddKH2AiTutorClient(this IServiceCollection services)
         {
             services.AddSingleton<QueryTrapsUsecase>();
+            services.AddSingleton<CCompileUsecase>();
             //NextService: services.AddSingleton<$ClassName$>();
 
             {
