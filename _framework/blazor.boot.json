@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "KH2AiTutorWeb",
   "resources": {
-    "hash": "sha256-mS4Ad2bzC6qdM1jZ3RmNPrMsPrOq/9Rr4vY7GiBeJug=",
+    "hash": "sha256-tc1vnpHmert0d2F2JUAV9WLX8b64EDGDCXxEebjIpSg=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-6mDkQm8wcqsePLieS1uDjmZJGTlxyzuaoKrjt7Rlztk="
     },
@@ -19,7 +19,7 @@
     "coreAssembly": {},
     "assembly": {
       "Antlr4.Runtime.Standard.wasm": "sha256-3Nrdh18+n0hrNSHApYis3JqGlQHY7ur5E3DZQmNxCIw=",
-      "KH2AiTutorWeb.wasm": "sha256-gzXmtOPBK2SlBbhrwDtr9NK4i3G0bwKetPNFwI6nQXE=",
+      "KH2AiTutorWeb.wasm": "sha256-5TuEGxORcYuI+L/aOMPI9c21efPdLRCwaMfZC3qWNk8=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-OlXTqlS+nVOnC0+7+2YMEeqSwnZcZrrkX53ZCWEDT8c=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-Ytvy8CoGTpQ8T9C6pUC1APPOYmuCm6rVpgWFTIGq8Sg=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-setJrOHfS2sQL8HGBRb3aANChQsEPL/IsO8wBpRzstU=",
